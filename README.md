@@ -14,6 +14,20 @@ Com ele você pode:
 
 # Netkit Help
 
+
+Netkit Help:
+
+-l <port>              To listen a port.
+
+-m <number>            To set max of connections.
+
+-c <address> <port>    To connect in something.
+
+-e <command>           To exec one command.
+
+
+--dnsr <domain>        To exec dns resolver.
+
 ![Netkit](https://i.imgur.com/UWLFK2a_d.webp?maxwidth=640&shape=thumb&fidelity=medium)
 
-Imagem meramente ilustrativa.
+Imagem meramente ilustrativa do Netkit 1.0.
