@@ -82,6 +82,9 @@ def pullt(require, info):
     return type
 
 if "--tables" in argv:
+    if "--columns" in argv:
+        print("Netkit: Args invalids")
+        exit()
     db = pullt("--tables", "-D")
     if db == "--tables":
         print("Netkit: -D requires name of database.")
@@ -91,6 +94,9 @@ if "--tables" in argv:
     print(res)
 
 elif "--columns" in argv:
+    if "--tables" in argv:
+        print("Netkit: Args invalids")
+        exit()
     db = pullt("--columns", "-D")
     table = pullt("--columns", "-T")
     pull_columns()
