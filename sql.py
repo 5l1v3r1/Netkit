@@ -75,12 +75,13 @@ def pullt(require, info):
     except:
         print("Netkit: missing arguments. Type -h to see the list of commands. ")
         exit()
-    return type
-if "--tables" in argv:
+
     if "--dbs" in argv:
         print("Netkit: Args invalids")
         exit()
+    return type
 
+if "--tables" in argv:
     db = pullt("--tables", "-D")
     if db == "--tables":
         print("Netkit: -D requires name of database.")
@@ -95,6 +96,7 @@ elif "--columns" in argv:
     pull_columns()
     res = sqli("column_name", "information_schema.columns", f"and table_schema = '{db}' and table_name = '{table}'")
     print(res)
+
 elif "--dbs" in argv:
     pull_columns()
     res = sqli("table_schema", "information_schema.tables")
