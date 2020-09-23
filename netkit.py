@@ -5,8 +5,11 @@
 from sys import argv, exit
 from modules.modules import error
 
+#excluindo argv[0] só para ficar os parâmetros.
+
 del argv[0]
 
+#se tiver -h nos parâmetros e a posição dele for a primeira vai printar o help
 
 if '-h' in argv:
 	if argv[0] == '-h':
@@ -23,12 +26,17 @@ Netkit Help:
 ''')
 		exit()
 
+#se não tiver nada no argv imprime falando que está faltando argumentos e para escrever -h para ver a lista de comandos
 
 elif argv == []: print('Netkit: missing arguments. Type -h to see the list of commands.')
 
 args = {}
 
+# se max não for denifindo este valor vai ser o "padrão"
+
 max = 1
+
+#mas caso ele esteja nos parâmetros e foi definido
 if '-m' in argv:
 	try:
 		max = int(argv[(argv.index('-m')+1)])
@@ -44,7 +52,11 @@ if '-e' in argv:
 			print('Netkit: missing arguments')
 			exit()
 
+
+########################################################################
+
 for i in argv:
+
 	if i == '-l' and args == {}:
 		try:
 			args['listen'] = int(argv[(argv.index('-l')+1)])
@@ -56,10 +68,16 @@ for i in argv:
 			exit()
 
 		from modules.modules import bind_tcp
+
+
 		if exe != False:
 			bind_tcp("0.0.0.0", args['listen'], exe, max=max)
 		else:
 			bind_tcp("0.0.0.0", args['listen'], max=max)
+
+
+###########################################################################
+
 
 	elif i == '-c' and args == {}:
 		try:
@@ -83,6 +101,10 @@ for i in argv:
 		except:
 			error()
 
+
+#############################################################################
+
+
 	elif i == '--dnsr':
 		try:
 			domain = argv[(argv.index('--dnsr')+1)]
@@ -94,6 +116,11 @@ for i in argv:
 			dns_resolver(domain)
 		except NameError:
 			pass
+
+
+###############################################################################
+
+
 	elif i == '--rdnsr':
 		try:
 			host = argv[(argv.index('--rdnsr')+1)]
@@ -105,3 +132,6 @@ for i in argv:
 			dns_reverse_resolver(host)
 		except NameError:
 			pass
+
+
+################################################################################
