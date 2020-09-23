@@ -1,6 +1,6 @@
 #!/bin/python3
 # -*- coding: utf-8 -*-
-#coded by: Fzin
+# -*- coded by: Fzin -*-
 
 from sys import argv
 from modules.modules import error
@@ -20,13 +20,9 @@ icon = ("""
 
 """)
 
-try:
-    out("which lolcat", shell=True)
-except:
-    call("pip3 install lolcat", shell=True)
-
 try: call(f"echo '''{icon}''' | lolcat", shell=True)
 except KeyboardInterrupt: sys.exit()
+except: None
 
 if '-h' in argv:
 	if argv[0] == '-h':
