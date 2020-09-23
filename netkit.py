@@ -1,5 +1,5 @@
 #!/bin/python3
-#coding: utf-8
+# -*- coding: utf-8 -*-
 #coded by: Fzin
 
 from sys import argv
@@ -25,7 +25,8 @@ try:
 except:
     call("pip3 install lolcat", shell=True)
 
-call(f"echo '''{icon}''' | lolcat", shell=True)
+try: call(f"echo '''{icon}''' | lolcat", shell=True)
+except KeyboardInterrupt: sys.exit()
 
 if '-h' in argv:
 	if argv[0] == '-h':
@@ -43,8 +44,7 @@ Netkit Help:
 		sys.exit()
 
 
-elif argv == []:
-	print('Netkit: missing arguments. Type -h to see the list of commands.')
+elif argv == []: print('Netkit: missing arguments. Type -h to see the list of commands.')
 
 args = {}
 
@@ -71,6 +71,9 @@ for i in argv:
 		except KeyError and IndexError:
 			print('Netkit: missing arguments')
 			sys.exit()
+		except ValueError:
+			print("Netkit: invalid argument.")
+			sys.exit()
 
 		from modules.modules import bind_tcp
 		if exe != False:
@@ -82,10 +85,11 @@ for i in argv:
 		try:
 			args['host_c'] = argv[(argv.index('-c')+1)]
 			args['port_c'] = int(argv[(argv.index(args['host_c'])+1)])
-		except KeyError:
+		except KeyError and IndexError:
 			print('Netkit: missing arguments')
-		except IndexError:
-			print('Netkit: missing arguments')
+			sys.exit()
+		except ValueError:
+			print("Netkit: invalid argument.")
 			sys.exit()
 		from modules.modules import connect_tcp
 		try:
