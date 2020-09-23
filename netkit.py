@@ -2,134 +2,62 @@
 # -*- coding: utf-8 -*-
 # -*- coded by: Fzin -*-
 
-from sys import argv, exit
-from modules.modules import error
+import argparse
 
-#excluindo argv[0] só para ficar os parâmetros.
+from sys import exit
+from modules import sckt
 
-del argv[0]
+EXE = False
+MAX = 1
 
-#se tiver -h nos parâmetros e a posição dele for a primeira vai printar o help
+parser = argparse.ArgumentParser(usage="python3 netkit.py", description="Netkit is a Swiss army knife tool.")
+parser.add_argument("-l", help="To listen a port.", metavar="<port>")
+parser.add_argument("-m", help="To set max of connections.", metavar="<number>")
+parser.add_argument("-c", help="To connect in something.", metavar="<address> <port>", nargs="*")
+parser.add_argument("-e", help="To exec one command.", metavar="<command>")
+parser.add_argument("--dnsr", help="To exec dns resolver.", metavar="<domain>")
+parser.add_argument("--rdnsr", help="To exec reverse dns resolver.", metavar="<address>")
 
-if '-h' in argv:
-	if argv[0] == '-h':
-		print(
-'''
-Netkit Help:
+args = parser.parse_args()
 
--l <port>\t\t\tTo listen a port.
--m <number>\t\t\tTo set max of connections.
--c <address> <port>\t\tTo connect in something.
--e <command>\t\t\tTo exec one command.
---dnsr <domain>\t\t\tTo exec dns resolver.
---rdnsr <address>\t\tTo exec reverse dns resolver.
-''')
-		exit()
+if None == args.c and None == args.l and None == args.m and None == args.e and None == args.dnsr and None == args.rdnsr:
+	print('Netkit: missing arguments. Type -h to see the list of commands.')
 
-#se não tiver nada no argv imprime falando que está faltando argumentos e para escrever -h para ver a lista de comandos
+if not args.m is None:
+	MAX = int(args.m)
+if not args.e is None:
+	EXE = args.e
 
-elif argv == []: print('Netkit: missing arguments. Type -h to see the list of commands.')
-
-args = {}
-
-# se max não for denifindo este valor vai ser o "padrão"
-
-max = 1
-
-#mas caso ele esteja nos parâmetros e foi definido
-if '-m' in argv:
-	try:
-		max = int(argv[(argv.index('-m')+1)])
-	except KeyError and IndexError:
-		print('Netkit: missing arguments')
-		exit()
-
-exe = False
-if '-e' in argv:
-		try:
-			exe = argv[(argv.index('-e')+1)]
-		except KeyError and IndexError:
-			print('Netkit: missing arguments')
-			exit()
-
-
-########################################################################
-
-if '-l' in argv:
-	try:
-		args['listen'] = int(argv[(argv.index('-l')+1)])
-	except KeyError and IndexError:
-		print('Netkit: missing arguments')
-		exit()
-	except ValueError:
-		print("Netkit: invalid argument.")
-		exit()
-
-	from modules.modules import bind_tcp
-
-
-	if exe != False:
-		bind_tcp("0.0.0.0", args['listen'], exe, max=max)
+if not args.l is None:
+	if not EXE == False:
+		sckt.bind_tcp(host="0.0.0.0", port=int(args.l), execution=EXE, max=MAX)
 	else:
-		bind_tcp("0.0.0.0", args['listen'], max=max)
+		sckt.bind_tcp(host="0.0.0.0", port=int(args.l), max=MAX)
 
-
-###########################################################################
-
-
-elif '-c' in argv:
+elif args.c:
 	try:
-		args['host_c'] = argv[(argv.index('-c')+1)]
-		args['port_c'] = int(argv[(argv.index(args['host_c'])+1)])
-	except KeyError and IndexError:
-		print('Netkit: missing arguments')
-		exit()
-	except ValueError:
-		print("Netkit: invalid argument.")
-		exit()
-	from modules.modules import connect_tcp
-	try:
-		if exe != False:
-			connect_tcp(args['host_c'], args['port_c'], exe)
+		if not EXE == False:
+			sckt.connect_tcp(host=args.c[0], port=int(args.c[1]), execution=EXE)
 		else:
-			connect_tcp(args['host_c'], args['port_c'])
+			sckt.connect_tcp(host=args.c[0], port=int(args.c[1]))
+
 	except ConnectionRefusedError:
 		print('Netkit: Connection Refused')
 		pass
+	except IndexError:
+		print("Netkit: missing port")
+		pass
 	except:
-		error()
+		sckt.error()
 
-
-#############################################################################
-
-
-elif '--dnsr' in argv:
+elif args.dnsr:
 	try:
-		domain = argv[(argv.index('--dnsr')+1)]
-	except IndexError:
-		print('Netkit: missing arguments')
-		exit()
-	from modules.modules import dns_resolver
-	try:
-		dns_resolver(domain)
+		sckt.dns_resolver(domain=args.dnsr)
 	except NameError:
 		pass
 
-
-###############################################################################
-
-
-elif '--rdnsr' in argv:
+elif args.rdnsr:
 	try:
-		host = argv[(argv.index('--rdnsr')+1)]
-	except IndexError:
-		print('Netkit: missing arguments')
-		exit()
-	from modules.modules import dns_reverse_resolver
-	try:
-		dns_reverse_resolver(host)
+		sckt.dns_reverse_resolver(address=args.rdnsr)
 	except NameError:
 		pass
-
-
-################################################################################
