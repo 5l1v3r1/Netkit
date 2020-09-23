@@ -2,27 +2,11 @@
 # -*- coding: utf-8 -*-
 # -*- coded by: Fzin -*-
 
-from sys import argv
+from sys import argv, exit
 from modules.modules import error
-import sys
-from subprocess import call, check_output as out
 
 del argv[0]
 
-icon = ("""
-
-███╗   ██╗███████╗████████╗██╗  ██╗██╗████████╗
-████╗  ██║██╔════╝╚══██╔══╝██║ ██╔╝██║╚══██╔══╝
-██╔██╗ ██║█████╗     ██║   █████╔╝ ██║   ██║
-██║╚██╗██║██╔══╝     ██║   ██╔═██╗ ██║   ██║
-██║ ╚████║███████╗   ██║   ██║  ██╗██║   ██║
-╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝   ╚═╝
-
-""")
-
-try: call(f"echo '''{icon}''' | lolcat", shell=True)
-except KeyboardInterrupt: sys.exit()
-except: None
 
 if '-h' in argv:
 	if argv[0] == '-h':
@@ -37,7 +21,7 @@ Netkit Help:
 --dnsr <domain>\t\t\tTo exec dns resolver.
 --rdnsr <address>\t\tTo exec reverse dns resolver.
 ''')
-		sys.exit()
+		exit()
 
 
 elif argv == []: print('Netkit: missing arguments. Type -h to see the list of commands.')
@@ -50,7 +34,7 @@ if '-m' in argv:
 		max = int(argv[(argv.index('-m')+1)])
 	except KeyError and IndexError:
 		print('Netkit: missing arguments')
-		sys.exit()
+		exit()
 
 exe = False
 if '-e' in argv:
@@ -58,7 +42,7 @@ if '-e' in argv:
 			exe = argv[(argv.index('-e')+1)]
 		except KeyError and IndexError:
 			print('Netkit: missing arguments')
-			sys.exit()
+			exit()
 
 for i in argv:
 	if i == '-l' and args == {}:
@@ -66,10 +50,10 @@ for i in argv:
 			args['listen'] = int(argv[(argv.index('-l')+1)])
 		except KeyError and IndexError:
 			print('Netkit: missing arguments')
-			sys.exit()
+			exit()
 		except ValueError:
 			print("Netkit: invalid argument.")
-			sys.exit()
+			exit()
 
 		from modules.modules import bind_tcp
 		if exe != False:
@@ -83,10 +67,10 @@ for i in argv:
 			args['port_c'] = int(argv[(argv.index(args['host_c'])+1)])
 		except KeyError and IndexError:
 			print('Netkit: missing arguments')
-			sys.exit()
+			exit()
 		except ValueError:
 			print("Netkit: invalid argument.")
-			sys.exit()
+			exit()
 		from modules.modules import connect_tcp
 		try:
 			if exe != False:
@@ -104,7 +88,7 @@ for i in argv:
 			domain = argv[(argv.index('--dnsr')+1)]
 		except IndexError:
 			print('Netkit: missing arguments')
-			sys.exit()
+			exit()
 		from modules.modules import dns_resolver
 		try:
 			dns_resolver(domain)
@@ -115,7 +99,7 @@ for i in argv:
 			host = argv[(argv.index('--rdnsr')+1)]
 		except IndexError:
 			print('Netkit: missing arguments')
-			sys.exit()
+			exit()
 		from modules.modules import dns_reverse_resolver
 		try:
 			dns_reverse_resolver(host)

