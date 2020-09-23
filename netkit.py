@@ -13,7 +13,7 @@ MAX = 1
 parser = argparse.ArgumentParser(usage="python3 netkit.py", description="Netkit is a Swiss army knife tool.")
 parser.add_argument("-l", help="To listen a port.", metavar="<port>")
 parser.add_argument("-m", help="To set max of connections.", metavar="<number>")
-parser.add_argument("-c", help="To connect in something.", metavar="<address> <port>", nargs="*")
+parser.add_argument("-c", help="To connect in something.", metavar="<address> <port>")
 parser.add_argument("-e", help="To exec one command.", metavar="<command>")
 parser.add_argument("--dnsr", help="To exec dns resolver.", metavar="<domain>")
 parser.add_argument("--rdnsr", help="To exec reverse dns resolver.", metavar="<address>")
