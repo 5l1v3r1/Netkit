@@ -8,9 +8,9 @@ def error():
 	except:
 		conn.close()
 	tm = False
-	while True:
-		sys.exit()
-
+	sys.exit()
+	try: raise
+	finally: sys.exit()
 def msg():
 	try:
 		while tm:
@@ -26,8 +26,10 @@ def msg():
 
 
 def t():
-	t = threading.Thread(target=msg, args=())
-	t.start()
+	try:
+		t = threading.Thread(target=msg, args=())
+		t.start()
+	except: error()
 def msg1():
 	while tm:
 		try:
@@ -47,14 +49,16 @@ def bind_tcp(host, port, exe=False, max=max):
 
 		elif str(e) == '[Errno 98] Address already in use':
 		    print("Netkit: Address already in use")
-
+		sys.exit()
+	except KeyboardInterrupt:
 		sys.exit()
 	s.listen(max)
 	print(f'Netkit: Listen {host}:{port}')
 	if max != 1:
 		print(f'Netkit: Maximum connections set is {max}')
 	global conn
-	conn, addr = s.accept()
+	try: conn, addr = s.accept()
+	except KeyboardInterrupt: sys.exit()
 	print(f'Netkit: Connection from {addr[0]}:{addr[1]}')
 	global tm;tm = True
 	if exe != False:
