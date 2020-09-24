@@ -7,7 +7,6 @@ from sys import exit
 class sckt:
 	def __init__(self):
 		self.tm = False
-		self.sckt = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 	def message_send(self):
 		try:
@@ -15,22 +14,43 @@ class sckt:
 				msg = input()
 				msg = msg + '\n'
 				msg = msg.encode('utf-8')
-				self.sckt.send(msg)
+				self.conn.send(msg)
+		except socket.error as ERROR:
+			if str(ERROR) != "[Errno 9] Bad file descriptor":
+				print(f"Netkit: {ERROR}")
+			self.error()
+
 		except BrokenPipeError:
 			print('Netkit: Broken pipe')
 			self.error()
+
+		except KeyboardInterrupt:
+			self.error()
+
 		except:
 			self.error()
 
 	def message_recv(self):
 		while self.tm:
 			try:
-				message = self.sckt.recv(2048).decode('utf-8')
+				message = self.conn.recv(2048).decode('utf-8')
 				if len(message) >= 1:
 					print(message[0:-1])
-			except:
+
+			except socket.error as ERROR:
+				if str(ERROR) != "[Errno 9] Bad file descriptor":
+					print(f"Netkit: {ERROR}")
 				self.error()
 
+			except BrokenPipeError:
+				print("Netkit: Broken pipe")
+				self.error()
+
+			except KeyboardInterrupt:
+				self.error()
+
+			except:
+				self.error()
 	def threads(self):
 		try:
 			thread = threading.Thread(target=self.message_send, args=())
@@ -38,41 +58,42 @@ class sckt:
 		except:
 			self.error()
 
-	def bind_tcp(self, host, port, execution=False, max=None):
+	def bind_tcp(self, host, port, execution=False, max=1):
 		try:
+			self.sckt = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 			self.sckt.bind((host, port))
 		except socket.error as Error:
 			if str(Error) == '[Errno 13] Permission denied':
 				print('Netkit: Permission Denied')
 			elif str(Error) == '[Errno 98] Address already in use':
 				print("Netkit: Address already in use")
-			
+
 			exit()
 		except KeyboardInterrupt:
 			exit()
-		
+
 		self.sckt.listen(max)
 		print(f'Netkit: Listen {host}:{port}')
-		
+
 		if not 1 == max:
 			print(f'Netkit: Maximum connections set is {max}')
-		
+
 		try:
-			conn, addr = self.sckt.accept()
+			self.conn, self.addr = self.sckt.accept()
 		except KeyboardInterrupt:
 			exit()
-		
-		print(f'Netkit: Connection from {addr[0]}:{addr[1]}')
+
+		print(f'Netkit: Connection from {self.addr[0]}:{self.addr[1]}')
 		self.tm = True
-		
+
 		if not execution == False:
-			os.dup2(conn.fileno(), 0)
-			os.dup2(conn.fileno(), 1)
-			os.dup2(conn.fileno(), 2)
-			
+			os.dup2(self.conn.fileno(), 0)
+			os.dup2(self.conn.fileno(), 1)
+			os.dup2(self.conn.fileno(), 2)
+
 			if execution == '/bin/bash' or execution == 'bash':
 				execution = '/bin/bash -i'
-			
+
 			subprocess.call(execution, shell=True)
 		else:
 			self.threads()
@@ -80,20 +101,20 @@ class sckt:
 
 	def connect_tcp(self, host, port, execution=False):
 		try:
-			self.sckt.settimeout(15)
-			self.sckt.connect((host, port))
+			self.conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+			self.conn.connect((host, port))
 		except socket.timeout:
 			print('Netkit: Timeout')
-			self.sckt.close()
+			self.conn.close()
 
 		self.tm = True
 		print(f'Netkit: Connected to {socket.gethostbyname(host)}:{port}')
 
 		if not execution == False:
-			os.dup2(self.sckt.fileno(), 0)
-			os.dup2(self.sckt.fileno(), 1)
-			os.dup2(self.sckt.fileno(), 2)
-			
+			os.dup2(self.conn.fileno(), 0)
+			os.dup2(self.conn.fileno(), 1)
+			os.dup2(self.conn.fileno(), 2)
+
 			if execution == '/bin/bash' or execution == 'bash':
 				execution = 'bash -i'
 
@@ -118,7 +139,7 @@ class sckt:
 		try:
 			self.sckt.close()
 		except:
-			self.sckt.close()
+			self.conn.close()
 
 		self.tm = False
 		exit()
