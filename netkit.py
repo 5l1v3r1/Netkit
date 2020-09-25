@@ -45,11 +45,15 @@ elif args.c:
 
 	except ConnectionRefusedError:
 		print('Netkit: Connection Refused')
-		pass
+		sckt.error()
 	except IndexError:
-		print("Netkit: missing port")
-		pass
+		print("Netkit: missing arguments.")
+		sckt.error()
+	except ValueError:
+		print("Netkit: Invalid argument")
+		sckt.error()
 	except:
+		print("Netkit: One error as occurred.")
 		sckt.error()
 
 elif args.dnsr:
