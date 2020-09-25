@@ -3,9 +3,9 @@
 # -*- coded by: Fzin -*-
 
 import argparse
-
 from sys import exit
 from modules import sckt
+
 
 EXE = False
 MAX = 1
@@ -17,18 +17,20 @@ parser.add_argument("-c", help="To connect in something.", metavar="<address> <p
 parser.add_argument("-e", help="To exec one command.", metavar="<command>")
 parser.add_argument("--dnsr", help="To exec dns resolver.", metavar="<domain>")
 parser.add_argument("--rdnsr", help="To exec reverse dns resolver.", metavar="<address>")
+parser.add_argument("--sqli", help="To unlock sqli automation commands.", metavar="<url> [options]")
 
 args = parser.parse_args()
+
 
 if None == args.c and None == args.l and None == args.m and None == args.e and None == args.dnsr and None == args.rdnsr:
 	print('Netkit: missing arguments. Type -h to see the list of commands.')
 
-if not args.m is None:
+if args.m:
 	MAX = int(args.m)
-if not args.e is None:
+if args.e:
 	EXE = args.e
 
-if not args.l is None:
+if args.l:
 	if not EXE == False:
 		sckt.bind_tcp(host="0.0.0.0", port=int(args.l), execution=EXE, max=MAX)
 	else:
