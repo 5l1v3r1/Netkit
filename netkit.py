@@ -15,7 +15,7 @@ parser.add_argument('-c', help='Connect to a server', metavar='<address> <port>'
 parser.add_argument('-e', help='Execute a command', metavar='<command>')
 parser.add_argument('--dnsr', help='Resolve a DNS', metavar='<domain>')
 parser.add_argument('--rdns', help='Resolve a reverse DNS', metavar='<address>')
-parser.add_argument("--sqli", help="To unlock sqli automation commands.", metavar="<url> [options]")
+parser.add_argument("--sqli", help="To unlock sqli automation commands.", metavar="<url> [options]", nargs="*")
 
 args = parser.parse_args()
 
