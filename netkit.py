@@ -1,69 +1,55 @@
-#!/bin/python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# -*- coded by: Fzin -*-
 
-import argparse
+# Coded by: Fzin
+
+from argparse import ArgumentParser
 from sys import exit
 from modules import sckt
 
+parser = ArgumentParser(usage='python3 netkit.py', description='Netkit is a Swiss Army Knife tool')
 
-EXE = False
-MAX = 1
-
-parser = argparse.ArgumentParser(usage="python3 netkit.py", description="Netkit is a Swiss army knife tool.")
-parser.add_argument("-l", help="To listen a port.", metavar="<port>")
-parser.add_argument("-m", help="To set max of connections.", metavar="<number>")
-parser.add_argument("-c", help="To connect in something.", metavar="<address> <port>", nargs="*")
-parser.add_argument("-e", help="To exec one command.", metavar="<command>")
-parser.add_argument("--dnsr", help="To exec dns resolver.", metavar="<domain>")
-parser.add_argument("--rdnsr", help="To exec reverse dns resolver.", metavar="<address>")
+parser.add_argument('-l', help='Listen a port', metavar='<port>', type=int)
+parser.add_argument('-m', help='Set max of connections', metavar='<number>', type=int)
+parser.add_argument('-c', help='Connect to a server', metavar='<address> <port>', nargs="*")
+parser.add_argument('-e', help='Execute a command', metavar='<command>')
+parser.add_argument('--dnsr', help='Resolve a DNS', metavar='<domain>')
+parser.add_argument('--rdns', help='Resolve a reverse DNS', metavar='<address>')
 parser.add_argument("--sqli", help="To unlock sqli automation commands.", metavar="<url> [options]")
 
 args = parser.parse_args()
 
+if not any(list(vars(args).values())):
+	print('Netkit: missing arguments. Use -h to display commands')
 
-if None == args.c and None == args.l and None == args.m and None == args.e and None == args.dnsr and None == args.rdnsr:
-	print('Netkit: missing arguments. Type -h to see the list of commands.')
+CMD = args.e if args.e else False
+MAX = args.m if args.m else 1
 
-if args.m:
-	MAX = int(args.m)
-if args.e:
-	EXE = args.e
+try:
+	if args.l:
+		sckt.bind_tcp(host='0.0.0.0', port=args.l, execution=CMD, max=MAX)
 
-if args.l:
-	if not EXE == False:
-		sckt.bind_tcp(host="0.0.0.0", port=int(args.l), execution=EXE, max=MAX)
-	else:
-		sckt.bind_tcp(host="0.0.0.0", port=int(args.l), max=MAX)
+	elif args.c:
+		sckt.connect_tcp(host=args.c[0], port=int(args.c[1]), execution=CMD)
 
-elif args.c:
-	try:
-		if not EXE == False:
-			sckt.connect_tcp(host=args.c[0], port=int(args.c[1]), execution=EXE)
-		else:
-			sckt.connect_tcp(host=args.c[0], port=int(args.c[1]))
-
-	except ConnectionRefusedError:
-		print('Netkit: Connection Refused')
-		sckt.error()
-	except IndexError:
-		print("Netkit: missing arguments.")
-		sckt.error()
-	except ValueError:
-		print("Netkit: Invalid argument")
-		sckt.error()
-	except:
-		print("Netkit: One error as occurred.")
-		sckt.error()
-
-elif args.dnsr:
-	try:
+	elif args.dnsr:
 		sckt.dns_resolver(domain=args.dnsr)
-	except NameError:
-		pass
 
-elif args.rdnsr:
-	try:
-		sckt.dns_reverse_resolver(address=args.rdnsr)
-	except NameError:
-		pass
+	elif args.rdns:
+		sckt.dns_reverse_resolver(address=args.rdns)
+
+except ConnectionRefusedError:
+	print('Netkit: Connection refused')
+	sckt.error()
+
+except IndexError:
+	print("Netkit: Missing arguments.")
+	exit()
+
+except ValueError:
+	print("Netkit: Invalid arguments.")
+	exit()
+
+except Exception as ERROR:
+	print(sckt.error_resolver(ERROR))
+	exit()
