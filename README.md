@@ -17,17 +17,19 @@ Com ele você pode:
 
 Netkit Help:
 
--l [port]            To listen a port.
+-l [port]                   To listen a port.
 
--m [number]          To set max of connections.
+-m [number]                 To set max of connections.
 
--c [address] [port]  To connect in something.
+-c [address] [port]         To connect in something.
 
--e [command]         To exec one command.
+-e [command]                To exec one command.
 
---dnsr [domain]      To exec dns resolver.
+--dnsr [domain]             To exec dns resolver.
 
---rdnsr [domain]     To exec reverse dns resolver.
+--rdns [domain]             To exec reverse dns resolver.
+
+--sqli <url> [options]      To unlock sqli automation commands.
 
 ![Netkit](https://i.imgur.com/UWLFK2a_d.webp?maxwidth=640&shape=thumb&fidelity=medium)
 
