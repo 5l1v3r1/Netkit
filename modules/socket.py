@@ -17,7 +17,7 @@ class sckt:
 				self.conn.send(msg)
 		except socket.error as ERROR:
 			if str(ERROR) != "[Errno 9] Bad file descriptor":
-				print(f"Netkit: {ERROR}")
+				print(f"Netkit: {self.error_resolver(ERROR)}")
 			self.error()
 
 		except BrokenPipeError:
@@ -27,8 +27,9 @@ class sckt:
 		except KeyboardInterrupt:
 			self.error()
 
-		except:
-			self.error()
+		except Exception as ERROR:
+			print(f"Netkit: {self.error_resolver(ERROR)}")
+			exit()
 
 	def message_recv(self):
 		while self.tm:
@@ -49,8 +50,9 @@ class sckt:
 			except KeyboardInterrupt:
 				self.error()
 
-			except:
-				self.error()
+			except Exception as ERROR:
+				print(f"Netkit: {self.error_resolver(ERROR)}")
+				exit()
 	def threads(self):
 		try:
 			thread = threading.Thread(target=self.message_send, args=())
@@ -62,13 +64,10 @@ class sckt:
 		try:
 			self.sckt = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 			self.sckt.bind((host, port))
-		except socket.error as Error:
-			if str(Error) == '[Errno 13] Permission denied':
-				print('Netkit: Permission Denied')
-			elif str(Error) == '[Errno 98] Address already in use':
-				print("Netkit: Address already in use")
-
+		except socket.error as ERROR:
+			print(f"Netkit: {self.error_resolver(ERROR)}")
 			exit()
+
 		except KeyboardInterrupt:
 			exit()
 
@@ -103,9 +102,9 @@ class sckt:
 		try:
 			self.conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 			self.conn.connect((host, port))
-		except socket.timeout:
-			print('Netkit: Timeout')
-			self.conn.close()
+		except Exception as ERROR:
+			print(f'Netkit: {self.error_resolver(ERROR)}')
+			self.error()
 
 		self.tm = True
 		print(f'Netkit: Connected to {socket.gethostbyname(host)}:{port}')
@@ -143,3 +142,9 @@ class sckt:
 
 		self.tm = False
 		exit()
+
+	def error_resolver(self, error):
+		error = str(error)
+		if "]" in error:
+			error = error[error.find("]")+2:]
+		return error
