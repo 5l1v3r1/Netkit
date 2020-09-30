@@ -9,17 +9,18 @@
 
 Com ele você pode:
 
-**• Escutar portas;**
 
-**• Se conectar a hosts;**
+> **• Escutar portas;**
 
-**• Após se conectar ou começar a escutar uma porta pode executar algo;**
+> **• Se conectar a hosts;**
 
-**• Usar como dns resolver;**
+> **• Após se conectar ou começar a escutar uma porta pode executar algo;**
 
-**• Usar como reverse dns resolver;**
+> **• Usar como dns resolver;**
 
-**• Usar para automatização sqli.**
+> **• Usar como reverse dns resolver;**
+
+> **• Usar para automatização sqli.**
 
 <h1>Netkit Help</h1>
 
