@@ -13,11 +13,18 @@
 
 *Imagem meramente ilustrativa do Netkit Alpha 1.0.*
 
+**Instalação:**
+
+```
+$ git clone https://github.com/Fzinxl/Netkit
+$ cd Netkit ; pip3 install -r requirements.txt
+```
+
 <br>
 
 **Com ele você pode:**
 
-> **• Escutar portas;**
+> **•  Escutar portas;**
 
 > **• Se conectar a hosts;**
 
