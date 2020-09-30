@@ -10,7 +10,7 @@
 
 ![Netkit](https://i.imgur.com/UWLFK2a_d.webp?maxwidth=640&shape=thumb&fidelity=medium)
 
-*Imagem meramente ilustrativa do Netkit 1.0.*
+*Imagem meramente ilustrativa do Netkit Alpha 1.0.*
 
 
 Com ele você pode:
