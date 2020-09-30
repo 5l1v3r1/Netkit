@@ -5,7 +5,7 @@
 
 > Netkit é uma tool de canivete suiço inspirado no netcat, o seu diferencial é que ele é focado em ações diferentes, como automatização sqli, sniffing e etc.... 
 
-**Versão:** 1.0 em desensolvimento
+**Versão:** *`1.0 em desenvolvimento.`*
 
 
 ![Netkit](https://i.imgur.com/UWLFK2a_d.webp?maxwidth=640&shape=thumb&fidelity=medium)
