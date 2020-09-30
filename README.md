@@ -17,10 +17,12 @@
 
 **Instalação:**
 
+Você pode baixar o tarball clicando [`aqui`](https://github.com/Fzinxl/Netkit/tarball/master) ou baixar o zipball clicando [`aqui`](https://github.com/Netkit/Fzinxl/Netkit/zipball/master)
 ```
 $ git clone https://github.com/Fzinxl/Netkit
 $ cd Netkit ; pip3 install -r requirements.txt
 ```
+
 
 <br>
 
