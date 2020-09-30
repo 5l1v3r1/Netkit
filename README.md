@@ -1,4 +1,4 @@
-<h1><a href="https://github.com/Fzinxl/Netkit/">🐉</a> Netkit</h1>
+<h1>🐉 Netkit</h1>
 
 [![License](https://img.shields.io/badge/License-MIT-critical.svg?style=flat-square)](https://github.com/Fzinxl/Netkit/blob/master/LICENSE/)
 [![Python3.8](https://img.shields.io/badge/Python-3.8-yellow.svg?style=flat-square&logo=python)](https://www.python.org/)
@@ -9,7 +9,7 @@
 **Versão:** *`1.0 em desenvolvimento.`*
 
 
-![Netkit](https://i.imgur.com/UWLFK2a_d.webp?maxwidth=640&shape=thumb&fidelity=medium)
+<a href="#">![Netkit](https://i.imgur.com/UWLFK2a_d.webp?maxwidth=640&shape=thumb&fidelity=medium)</a>
 
 *Imagem meramente ilustrativa do Netkit Alpha 1.0.*
 
