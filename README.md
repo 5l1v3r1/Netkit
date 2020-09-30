@@ -17,8 +17,6 @@
 
 **Com ele você pode:**
 
-<br>
-
 > **• Escutar portas;**
 
 > **• Se conectar a hosts;**
