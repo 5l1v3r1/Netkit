@@ -39,7 +39,7 @@ Com ele você pode:
 
  -c [address] [port]         To connect in something.
 
--e [command]                To exec one command.
+ -e [command]                To exec one command.
 
 --dnsr [domain]             To exec dns resolver.
 
