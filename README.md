@@ -13,6 +13,8 @@
 
 *Imagem meramente ilustrativa do Netkit Alpha 1.0.*
 
+<br>
+
 **Instalação:**
 
 ```
