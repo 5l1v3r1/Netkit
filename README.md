@@ -36,18 +36,38 @@
 
 **Netkit Help:**
 
-```
- -l [port]                   To listen a port.
+<table>
+ 
+ <tr>
+  <td>Parâmetro</td><td>Argumento</td><td>Descrição</td>
+  </tr>
+ 
+  <tr>
+ <td>-l</td><td>[port]</td><td>To listen a port.</td>
+ </tr>
+ 
+ <tr>
+   <td>-m</td><td>[number]</td><td>To set max of connections.</td>
+ </tr>
 
- -m [number]                 To set max of connections.
+<tr> 
+ <td>-c</td><td>[address] [port]</td><td>To connect in something.</td>
+  </tr>
 
- -c [address] [port]         To connect in something.
+<tr>
+  <td>-e</td><td>[command]</td><td>To exec one command.</td>
+</tr>
 
- -e [command]                To exec one command.
-
---dnsr [domain]             To exec dns resolver.
-
---rdns [domain]             To exec reverse dns resolver.
-
---sqli <url> [options]      To unlock sqli automation commands.
-```
+<tr>
+   <td>--dnsr</td><td>[domain]</td><td>To exec dns resolver.</td>
+  </tr>
+  
+  <tr>
+   <td>--rdns</td><td>[address]</td><td>To exec reverse dns resolver.</td>
+  </tr>
+  
+  <tr>
+   <td>--sqli</td><td>[url] [options]</td><td>To unlock sqli automation commands.</td>
+  </tr>
+  
+</table>
