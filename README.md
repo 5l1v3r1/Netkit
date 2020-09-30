@@ -1,16 +1,24 @@
 <h1>Netkit</h1>
-Netkit é uma tool de canivete suiço. 
+[![License](https://img.shields.io/badge/License-MIT-critical.svg?style=flat-square)](https://github.com/Fzinxl/Netkit/blob/master/LICENSE)
+[![Python3.8](https://img.shields.io/badge/Python-3.8-yellow.svg?style=flat-square&logo=python)](https://www.python.org/)
+
+>Netkit é uma tool de canivete suiço inspirado no netcat, o seu diferencial é que ele é focado em ações diferentes, como automatização sqli, sniffing e etc.... 
+
+**Versão:** 1.0 em desensolvimento
+
 Com ele você pode:
 
-• Escutar portas;
+**• Escutar portas;**
 
-• Se conectar a hosts;
+**• Se conectar a hosts;**
 
-• Após se conectar ou começar a escutar uma porta pode executar algo;
+**• Após se conectar ou começar a escutar uma porta pode executar algo;**
 
-• Usar como dns resolver;
+**• Usar como dns resolver;**
 
-• Usar como reverse dns resolver.
+**• Usar como reverse dns resolver;**
+
+**• Usar para automatização sqli.**
 
 <h1>Netkit Help</h1>
 
