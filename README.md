@@ -5,6 +5,7 @@
 
 > Netkit é uma tool de canivete suiço inspirado no netcat, o seu diferencial é que ele é focado em ações diferentes, como automatização sqli, sniffing e etc.... 
 
+
 **Versão:** *`1.0 em desenvolvimento.`*
 
 
@@ -12,9 +13,11 @@
 
 *Imagem meramente ilustrativa do Netkit Alpha 1.0.*
 
+<br>
 
-Com ele você pode:
+**Com ele você pode:**
 
+<br>
 
 > **• Escutar portas;**
 
@@ -28,10 +31,13 @@ Com ele você pode:
 
 > **• Usar para automatização sqli.**
 
+<br>
+
 <h1>Netkit Help</h1>
 
 
 **Netkit Help:**
+
 ```
  -l [port]                   To listen a port.
 
