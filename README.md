@@ -15,7 +15,7 @@
 
 <br>
 
-**Instalação:**
+**☁️ Instalação:**
 
 Você pode baixar o tarball clicando [`aqui`](https://github.com/Fzinxl/Netkit/tarball/master) ou baixar o zipball clicando [`aqui`](https://github.com/Fzinxl/Netkit/zipball/master)
 ```
